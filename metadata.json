@@ -1,0 +1,6 @@
+{
+  "name": "중3 주장하는 글쓰기 나눔터",
+  "description": "중학교 3학년 국어 수업을 위한 서론-본론-결론 단계별 주장하는 글쓰기 및 실시간 개요 카드 공유, 동료 피드백 웹앱",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

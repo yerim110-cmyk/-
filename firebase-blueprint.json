@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "EssayCard": {
+      "title": "EssayCard",
+      "description": "중3 학생이 제출한 주장하는 글 개요 카드",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "topic": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "claim": { "type": "string", "minLength": 2, "maxLength": 300 },
+        "reason1": { "type": "string", "minLength": 2, "maxLength": 500 },
+        "reason2": { "type": "string", "maxLength": 500 },
+        "reason3": { "type": "string", "maxLength": 500 },
+        "introduction": { "type": "string", "maxLength": 1000 },
+        "body": { "type": "string", "maxLength": 1000 },
+        "conclusion": { "type": "string", "maxLength": 1000 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "studentId": { "type": "string", "minLength": 1, "maxLength": 30 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "likesCount": { "type": "integer" },
+        "likedBy": { "type": "array" },
+        "commentsCount": { "type": "integer" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["topic", "claim", "reason1", "authorName", "studentId", "authorId"]
+    },
+    "PeerFeedback": {
+      "title": "PeerFeedback",
+      "description": "주장하는 글 카드에 남긴 한 줄 동료 피드백 및 댓글",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "cardId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "studentId": { "type": "string", "minLength": 1, "maxLength": 30 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "category": { "type": "string", "maxLength": 50 },
+        "content": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["cardId", "authorName", "studentId", "authorId", "content"]
+    }
+  },
+  "firestore": {
+    "/essayCards/{cardId}": {
+      "schema": { "$ref": "entities.EssayCard" },
+      "description": "학급 학생들이 제출한 주장글 개요 카드 데이터"
+    },
+    "/essayCards/{cardId}/feedbacks/{feedbackId}": {
+      "schema": { "$ref": "entities.PeerFeedback" },
+      "description": "각 주장글 카드에 작성된 동료 피드백 및 댓글"
+    }
+  }
+}

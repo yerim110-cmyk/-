@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation for EssayCard
+    function isValidEssayCard(data) {
+      return data.topic is string && data.topic.size() >= 2 && data.topic.size() <= 100
+          && data.claim is string && data.claim.size() >= 2 && data.claim.size() <= 300
+          && data.reason1 is string && data.reason1.size() >= 2 && data.reason1.size() <= 500
+          && data.authorName is string && data.authorName.size() >= 1 && data.authorName.size() <= 50
+          && data.studentId is string && data.studentId.size() >= 1 && data.studentId.size() <= 30
+          && data.authorId is string && data.authorId.size() <= 128;
+    }
+
+    // Essay Cards collection
+    match /essayCards/{cardId} {
+      allow read: if true;
+      allow create: if isValidEssayCard(incoming());
+      allow update: if true; // Allow editing and liking/comment counts
+      allow delete: if true; // Allowed in open classroom session
+
+      // Peer Feedback subcollection
+      match /feedbacks/{feedbackId} {
+        allow read: if true;
+        allow create: if incoming().content is string 
+                      && incoming().content.size() >= 1 
+                      && incoming().content.size() <= 500;
+        allow update: if true;
+        allow delete: if true;
+      }
+    }
+  }
+}
